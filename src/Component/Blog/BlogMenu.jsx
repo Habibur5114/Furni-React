@@ -5,6 +5,7 @@ import AllBlog from './AllBlog';
 import Testimonials from './../Home/Testimonials';
 import Newsletter from './../Home/Newsletter';
 import Footer from './../Home/Footer';
+import SidebarMenu from '../../Backend/Layouts/SidebarMenu';
 
 
 class BlogMenu extends Component {
@@ -17,6 +18,8 @@ class BlogMenu extends Component {
                <Testimonials/>
                <Newsletter/>
               <Footer/>
+             
+              
             </div>
         );
     }

@@ -14,6 +14,9 @@ import BlogMenu from "./Component/Blog/BlogMenu";
 import ContactMenu from "./Component/Contact/ContactMenu";
 import Master from "./Backend/Master.jsx";
 import Main from "./Backend/Page/Main.jsx";
+import CategoryList from "./Backend/Category/CategoryList.jsx";
+import Create from "./Backend/Category/Create.jsx";
+;
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -26,6 +29,9 @@ createRoot(document.getElementById("root")).render(
       <Route path="/contact" element={<ContactMenu />} />
       <Route path="/admin" element={<Master />}>
         <Route path="dashboard" element={<Main />} />
+        <Route path="category/list" element={<CategoryList />} />
+        <Route path="category/create" element={<Create />} />
+        
       </Route>
     </Routes>
   </BrowserRouter>

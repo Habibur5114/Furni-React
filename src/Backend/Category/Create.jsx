@@ -1,134 +1,66 @@
-// import React, { Component } from "react";
-
-// export default class Create extends Component {
-//   render() {
-//     return (
-//       <div className="container-fluid p-4">
-//         <div className="row justify-content-center">
-//           <div className="col-lg-12">
-//             <div className="card shadow-sm border-0">
-//               {/* Header */}
-//               <div className="card-header bg-white d-flex align-items-center mt-4">
-//                 <h5 className="mb-0 fw-semibold">Create Category</h5>
-//               </div>
-
-//               {/* Body */}
-//               <div className="card-body">
-//                 <form>
-//                   <div className="row">
-//                     {/* Name */}
-//                     <div className="col-md-6 mb-3">
-//                       <label className="form-label fw-semibold">Name</label>
-//                       <input
-//                         type="text"
-//                         className="form-control"
-//                         placeholder="Enter category name"
-//                       />
-//                     </div>
-
-//                     {/* Status */}
-//                     <div className="col-md-6 mb-3">
-//                       <label className="form-label fw-semibold">Status</label>
-//                       <select className="form-select">
-//                         <option>Active</option>
-//                         <option>Inactive</option>
-//                       </select>
-//                     </div>
-
-//                     {/* Image */}
-//                     <div className="col-md-12 mb-3">
-//                       <label className="form-label fw-semibold">Image</label>
-//                       <input type="file" className="form-control" />
-//                     </div>
-
-//                     {/* Description */}
-//                     <div className="col-md-12 mb-3">
-//                       <label className="form-label fw-semibold">
-//                         Description
-//                       </label>
-//                       <textarea
-//                         className="form-control"
-//                         rows="4"
-//                         placeholder="Write short description..."
-//                       ></textarea>
-//                     </div>
-//                   </div>
-//                 </form>
-//                 <button className="btn btn-primary mb-4">Save</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
 import React, { Component } from "react";
-import axios from "axios"; 
 
 export default class Create extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      status: "Active",
-      image: null,
-      description: "",
-    };
-  }
-
-  handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+  state = {
+    name: "",
+    status: 1,
+    description: "",
+    image: null,
   };
 
-  handleFileChange = (e) => {
-    this.setState({ image: e.target.files[0] });
+  handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "image") {
+      this.setState({ image: files[0] });
+    } else {
+      this.setState({ [name]: value });
+    }
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const { name, status, description, image } = this.state;
 
+    // Prepare form data for file upload
     const formData = new FormData();
-    formData.append("name", this.state.name);
-    formData.append("status", this.state.status);
-    formData.append("image", this.state.image);
-    formData.append("description", this.state.description);
+    formData.append("name", name);
+    formData.append("status", status);
+    formData.append("description", description);
+    if (image) formData.append("image", image);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/admin/category/store",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Success:", response.data);
+      const response = await fetch("http://localhost:8000/api/category/store", {
+        method: "POST",
+        body: formData,
+        // Note: Do NOT set Content-Type header for FormData
+      });
+
+      const data = await response.json();
+      console.log("Success:", data);
       alert("Category created successfully!");
+      this.setState({ name: "", status: 1, description: "", image: null });
     } catch (error) {
-      console.error("Error:", error.response);
-      alert("Failed to create category.");
+      console.error("Error:", error);
+      alert("Failed to create category!");
     }
+
+    
   };
 
   render() {
+    const { name, status, description } = this.state;
     return (
       <div className="container-fluid p-4">
         <div className="row justify-content-center">
           <div className="col-lg-12">
             <div className="card shadow-sm border-0">
-              {/* Header */}
               <div className="card-header bg-white d-flex align-items-center mt-4">
                 <h5 className="mb-0 fw-semibold">Create Category</h5>
               </div>
 
-              {/* Body */}
               <div className="card-body">
                 <form onSubmit={this.handleSubmit}>
                   <div className="row">
-                    {/* Name */}
                     <div className="col-md-6 mb-3">
                       <label className="form-label fw-semibold">Name</label>
                       <input
@@ -136,51 +68,49 @@ export default class Create extends Component {
                         className="form-control"
                         name="name"
                         placeholder="Enter category name"
-                        value={this.state.name}
+                        value={name}
                         onChange={this.handleChange}
+                        required
                       />
                     </div>
 
-                    {/* Status */}
                     <div className="col-md-6 mb-3">
                       <label className="form-label fw-semibold">Status</label>
                       <select
                         className="form-select"
                         name="status"
-                        value={this.state.status}
+                        value={status}
                         onChange={this.handleChange}
                       >
-                        <option>Active</option>
-                        <option>Inactive</option>
+                        <option value={1}>Active</option>
+                        <option value={0}>Inactive</option>
                       </select>
                     </div>
 
-                    {/* Image */}
                     <div className="col-md-12 mb-3">
                       <label className="form-label fw-semibold">Image</label>
                       <input
                         type="file"
                         className="form-control"
-                        onChange={this.handleFileChange}
+                        name="image"
+                        onChange={this.handleChange}
                       />
                     </div>
 
-                    {/* Description */}
                     <div className="col-md-12 mb-3">
-                      <label className="form-label fw-semibold">
-                        Description
-                      </label>
+                      <label className="form-label fw-semibold">Description</label>
                       <textarea
                         className="form-control"
-                        name="description"
                         rows="4"
+                        name="description"
                         placeholder="Write short description..."
-                        value={this.state.description}
+                        value={description}
                         onChange={this.handleChange}
                       ></textarea>
                     </div>
                   </div>
-                  <button type="submit" className="btn btn-primary mb-4">
+
+                  <button className="btn btn-primary mb-4" type="submit">
                     Save
                   </button>
                 </form>

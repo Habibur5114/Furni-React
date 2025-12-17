@@ -1,87 +1,109 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 const CategoryList = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch categories
+  const fetchCategories = () => {
+    setLoading(true);
+    axios
+      .get("http://localhost:8000/api/category/index")
+      .then((res) => {
+        setCategories(res.data.data || []);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // Delete category function
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this category?")) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/api/category/delete/${id}`);
+      alert("Category deleted successfully!");
+      fetchCategories(); // Refresh the list
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Failed to delete category!");
+    }
+  };
+
+  if (loading) return <p className="text-center mt-4">Loading...</p>;
+  if (error) return <p className="text-center text-danger">Error: {error}</p>;
+
   return (
-    <div className="container-fluid p-4">
-      {/* Header */}
-      <div className="card shadow-sm border-0">
-        <div className="card-header bg-white d-flex align-items-center">
-          <h5 className="mb-0 fw-semibold">Category List</h5>
+    <div className="m-3">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="text-primary">Category List</h3>
+        <Link to="/admin/category/create" className="btn btn-success shadow-sm">
+          <i className="bi bi-plus-lg me-1"></i> Add New
+        </Link>
+      </div>
 
-          <Link to="/admin/category/create" className="ms-auto">
-            <button className="btn btn-warning btn-sm">
-              <i className="bi bi-plus-lg me-1"></i> Add New
-            </button>
-          </Link>
-        </div>
-
-        {/* Table */}
-        <div className="card-body p-0">
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0">
-              <thead className="table-light">
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Image</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th className="text-end">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Electronics</td>
+      <div className="table-responsive shadow-sm rounded">
+        <table className="table table-hover align-middle">
+          <thead className="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Description</th>
+              <th scope="col">Status</th>
+              <th scope="col" className="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center">
+                  No categories found.
+                </td>
+              </tr>
+            ) : (
+              categories.map((cat, index) => (
+                <tr key={cat.id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{cat.name}</td>
                   <td>
-                    <div
-                      className="bg-secondary rounded"
-                      style={{ width: 40, height: 40 }}
-                    ></div>
+                    <img
+                      src={`http://localhost:8000/${cat.image}`}
+                      alt={cat.name}
+                      style={{ width: "50px", height: "50px" }}
+                    />
                   </td>
-                  <td>Electronic products category</td>
+                  <td>{cat.description}</td>
                   <td>
-                    <span className="badge bg-success">Active</span>
+                    <span className={`badge ${cat.status === 1 ? "bg-success" : "bg-danger"}`}>
+                      {cat.status === 1 ? "Active" : "Inactive"}
+                    </span>
                   </td>
-                  <td className="text-end">
-                    <button className="btn btn-outline-primary btn-sm me-2">
-                      Edit
-                    </button>
-                    <button className="btn btn-outline-danger btn-sm">
-                      Delete
+                  <td className="text-center">
+                    <Link to={`/admin/category/edit/${cat.id}`} className="btn btn-warning btn-sm me-1">
+                      <i className="bi bi-pencil-square"></i>
+                    </Link>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDelete(cat.id)}
+                    >
+                      <i className="bi bi-trash"></i>
                     </button>
                   </td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="card-header bg-white d-flex align-items-center">
-          <small className="text-muted">Showing 1–2 of 2 entries</small>
-
-          <nav className="ms-auto">
-            <ul className="pagination pagination-sm mb-0">
-              <li className="page-item disabled">
-                <a className="page-link" href="#">
-                  Previous
-                </a>
-              </li>
-              <li className="page-item active">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -1,128 +1,79 @@
-
-
-import React, { Component } from "react";
-
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 export default class Edit extends Component {
-  state = {
-    name: "",
-    status: 1,
-    description: "",
-    image: null,
-  };
-
-  componentDidMount() {
-    // Fetch existing category data (example)
-    const categoryId = 1; // replace with dynamic id if needed
-    fetch(`http://localhost:8000/api/category/index/${categoryId}`)
-      .then((res) => res.json())
-      .then((data) =>
-        this.setState({
-          name: data.name,
-          status: data.status,
-          description: data.description,
-        })
-      )
-      .catch((err) => console.error(err));
-  }
-
-  handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "image") {
-      this.setState({ image: files[0] });
-    } else {
-      this.setState({ [name]: value });
-    }
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, status, description, image } = this.state;
-
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("status", status);
-    formData.append("description", description);
-    if (image) formData.append("image", image);
-
-    // Mock API update request
-    fetch(`http://localhost:8000/api/category/update/id`, {
-      method: "POST", // or PUT depending on your backend
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert("Category updated successfully!");
-        console.log(data);
-      })
-      .catch((err) => console.error(err));
-  };
-
   render() {
-    const { name, status, description } = this.state;
-
     return (
-      <div className="row justify-content-center">
-        <div className="col-lg-12">
-          <div className="card shadow-sm border-0">
-            <div className="card-header bg-white d-flex align-items-center mt-4">
-              <h5 className="mb-0 fw-semibold">Edit Category</h5>
-            </div>
-            <div className="card-body">
-              <form onSubmit={this.handleSubmit}>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <label className="form-label fw-semibold">Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      value={name}
-                      onChange={this.handleChange}
-                      placeholder="Enter category name"
-                      required
-                    />
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <label className="form-label fw-semibold">Status</label>
-                    <select
-                      className="form-select"
-                      name="status"
-                      value={status}
-                      onChange={this.handleChange}
-                    >
-                      <option value={1}>Active</option>
-                      <option value={0}>Inactive</option>
-                    </select>
-                  </div>
-                  <div className="col-md-12 mb-3">
-                    <label className="form-label fw-semibold">Image</label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      name="image"
-                      onChange={this.handleChange}
-                    />
-                  </div>
-                  <div className="col-md-12 mb-3">
-                    <label className="form-label fw-semibold">Description</label>
-                    <textarea
-                      className="form-control"
-                      rows="4"
-                      name="description"
-                      value={description}
-                      onChange={this.handleChange}
-                      placeholder="Write short description..."
-                    ></textarea>
-                  </div>
+          <div className="container-fluid py-5 bg-light min-vh-100">
+        <div className="row justify-content-center">
+          <div className="col-lg-12 col-xl-12">
+            <div className="card border-0 shadow-sm rounded-2">
+              <div className="card-header bg-transparent border-bottom py-4 px-4">
+                <div className="d-flex align-items-center justify-content-between">
+                  <h5 className="mb-0 fw-bold text-dark">Edit Category</h5>
+                  <Link to="/admin/category/list" className="btn btn-success d-flex align-items-center shadow-sm px-3">
+                    <i className="bi bi-plus-lg me-2"></i>
+                    <span>Back</span>
+                  </Link>
                 </div>
-                <button className="btn btn-primary mb-4" type="submit">
-                  Save
-                </button>
-              </form>
+              </div>
+
+              <div className="card-body p-4">
+                <form>
+                  <div className="row g-4">
+                    <div className="col-md-8">
+                      <label className="form-label small  fw-bold text-muted">Name</label>
+                      <input
+                        type="text"
+                        className="form-control form-control-lg border-2 shadow-none"
+                        name="name"
+                        placeholder="Enter Name"
+                        value={name || ""}
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label fw-bold text-muted">Status</label>
+                      <select
+                        className="form-select form-control-lg border-2 shadow-none"
+                        name="status"
+                        value={status || 1}>
+                        <option value={1}>Active</option>
+                        <option value={0}>Inactive</option>
+                      </select>
+                    </div>
+                    <div className="col-12">
+                      <label className="form-label  fw-bold text-muted">Image <span>(Recommended: Square image, max 2MB.)</span></label>
+                      <div className="input-group">
+                        <input
+                          type="file"
+                          className="form-control border-2 shadow-none"
+                          name="image"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <label className="form-label fw-bold text-muted">Description</label>
+                      <textarea
+                        className="form-control border-2 shadow-none"
+                        rows="5"
+                        name="description"
+                        placeholder="Provide a brief summary of this category..."
+                        
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="mt-3 d-flex gap-2">
+                    <button className="btn btn-primary fw-semibold shadow-sm" type="submit">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
+            <p className="text-center text-muted mt-4 small">
+            </p>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

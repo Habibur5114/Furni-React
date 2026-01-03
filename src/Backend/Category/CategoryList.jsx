@@ -1,112 +1,123 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
 
-const CategoryList = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default class CategoryList extends Component {
+  render() {
+    return (
+      <div className="container-fluid py-5 bg-light min-vh-100">
+        <div className="row justify-content-center">
+          <div className="col-lg-12 col-xl-12">
+            <div className="card border-0 shadow-sm rounded-2">
+              <div className="card-header bg-transparent border-bottom py-4 px-4">
+                <div className="card-header bg-white border-bottom py-3">
+                  <div className="d-flex align-items-center justify-content-between">
+                    {/* Left Side: Title & Icon */}
+                    <div className="d-flex align-items-center">
+                      <div className="bg-light-primary rounded-circle d-none">
+                        <i className="bi bi-list-ul text-primary"></i>
+                      </div>
+                      <h6 className="mb-0 fw-bold text-dark">Category List</h6>
+                    </div>
 
-  // Fetch categories
-  const fetchCategories = () => {
-    setLoading(true);
-    axios
-      .get("http://localhost:8000/api/category/index")
-      .then((res) => {
-        setCategories(res.data.data || []);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  // Delete category function
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this category?")) return;
-
-    try {
-      await axios.delete(`http://localhost:8000/api/category/delete/${id}`);
-      alert("Category deleted successfully!");
-      fetchCategories(); // Refresh the list
-    } catch (err) {
-      console.error("Delete error:", err);
-      alert("Failed to delete category!");
-    }
-  };
-
-  if (loading) return <p className="text-center mt-4">Loading...</p>;
-  if (error) return <p className="text-center text-danger">Error: {error}</p>;
-
-  return (
-    <div className="m-3">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3 className="text-primary">Category List</h3>
-        <Link to="/admin/category/create" className="btn btn-success shadow-sm">
-          <i className="bi bi-plus-lg me-1"></i> Add New
-        </Link>
-      </div>
-
-      <div className="table-responsive shadow-sm rounded">
-        <table className="table table-hover align-middle">
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Image</th>
-              <th scope="col">Description</th>
-              <th scope="col">Status</th>
-              <th scope="col" className="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="text-center">
-                  No categories found.
-                </td>
-              </tr>
-            ) : (
-              categories.map((cat, index) => (
-                <tr key={cat.id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{cat.name}</td>
-                  <td>
-                    <img
-                      src={`http://localhost:8000/${cat.image}`}
-                      alt={cat.name}
-                      style={{ width: "50px", height: "50px" }}
-                    />
-                  </td>
-                  <td>{cat.description}</td>
-                  <td>
-                    <span className={`badge ${cat.status === 1 ? "bg-success" : "bg-danger"}`}>
-                      {cat.status === 1 ? "Active" : "Inactive"}
-                    </span>
-                  </td>
-                  <td className="text-center">
-                    <Link to={`/admin/category/edit/${cat.id}`} className="btn btn-warning btn-sm me-1">
-                      <i className="bi bi-pencil-square"></i>
+                    {/* Right Side: Action Button */}
+                    <Link to="/admin/category/create" className="btn btn-success d-flex align-items-center shadow-sm px-3">
+                      <i className="bi bi-plus-lg me-2"></i>
+                      <span>Add New</span>
                     </Link>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(cat.id)}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
+                  </div>
+                </div>
 
-export default CategoryList;
+                <Table striped bordered hover className='mt-3'>
+                  <thead>
+                    <tr>
+                        <th style={{ width: '5%' }} className="ps-4">Sl</th>
+                        {/* Applied 20% width to these columns */}
+                        <th style={{ width: '20%' }}>Name</th>
+                        <th style={{ width: '35%' }}>Description</th>
+                        <th style={{ width: '15%' }}>Image</th>
+                        <th style={{ width: '15%' }}>Status</th>
+                        <th style={{ width: '10%' }} className="text-center pe-4">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                      <td>Active</td>
+                      <td >
+                        <a href="" className='btn btn-warning btn-sm m-1'>Edit</a>
+                        <a href="" className='btn btn-danger btn-sm m-1'>Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                      <td>Active</td>
+                       <td >
+                        <a href="" className='btn btn-warning btn-sm m-1'>Edit</a>
+                        <a href="" className='btn btn-danger btn-sm m-1'>Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                      <td>Active</td>
+                       <td >
+                        <a href="" className='btn btn-warning btn-sm m-1'>Edit</a>
+                        <a href="" className='btn btn-danger btn-sm m-1'>Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                      <td>Active</td>
+                       <td >
+                        <a href="" className='btn btn-warning btn-sm m-1'>Edit</a>
+                        <a href="" className='btn btn-danger btn-sm m-1'>Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                      <td>Active</td>
+                       <td >
+                        <a href="" className='btn btn-warning btn-sm m-1'>Edit</a>
+                        <a href="" className='btn btn-danger btn-sm m-1'>Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                      <td>Active</td>
+                       <td >
+                        <a href="" className='btn btn-warning btn-sm m-1'>Edit</a>
+                        <a href="" className='btn btn-danger btn-sm m-1'>Delete</a>
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </Table>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}

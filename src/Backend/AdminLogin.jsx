@@ -1,0 +1,154 @@
+// import React, { Component } from 'react'
+// import Button from 'react-bootstrap/Button';
+// import Form from 'react-bootstrap/Form';
+
+// export default class AdminLogin extends Component {
+//   render() {
+//     return (
+
+//       <div className='container d-flex align-items-center justify-content-center' style={{ minHeight: '100vh' }}>
+
+//         <div className="row justify-content-center w-100">
+
+//           <div className="col-lg-4 col-md-6 shadow p-4 bg-white rounded">
+//             <div className='text-center py-4'>
+//               <h5>Softvence Delta</h5>
+//             </div>
+
+//             <Form>
+//               <Form.Group className="mb-3" controlId="formBasicEmail">
+//                 <Form.Label>Email</Form.Label>
+//                 <Form.Control type="email" name="email" placeholder="Enter email" />
+//               </Form.Group>
+
+//               <Form.Group className="mb-3" controlId="formBasicPassword">
+//                 <Form.Label>Password</Form.Label>
+//                 <Form.Control type="password" name="password" placeholder="Password" />
+//               </Form.Group>
+
+//               <Button variant="success mb-4 mt-3" className='form-control' type="submit">
+//                 Login
+//               </Button>
+//             </Form>
+//           </div>
+
+//         </div>
+//       </div>
+//     )
+//   }
+// }
+
+import React, { Component } from 'react'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import axios from 'axios'
+
+export default class AdminLogin extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      email: '',
+      password: '',
+      loading: false,
+      error: ''
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit = async (e) => {
+    e.preventDefault()
+
+    this.setState({ loading: true, error: '' })
+
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/admin/login',
+        {
+          email: this.state.email,
+          password: this.state.password,
+        }
+      )
+
+      // Save token
+      localStorage.setItem('admin_token', response.data.token)
+
+      alert('Login Successful')
+
+      // redirect
+      window.location.href = '/admin/dashboard'
+
+    } catch (error) {
+      this.setState({
+        error: error.response?.data?.message || 'Login failed',
+        loading: false
+      })
+    }
+  }
+
+  render() {
+    return (
+      <div
+        className="container d-flex align-items-center justify-content-center"
+        style={{ minHeight: '100vh' }}
+      >
+        <div className="row justify-content-center w-100">
+          <div className="col-lg-4 col-md-6 shadow p-4 bg-white rounded">
+
+            <div className="text-center py-4">
+              <h5>Softvence Delta</h5>
+            </div>
+
+            {this.state.error && (
+              <div className="alert alert-danger">
+                {this.state.error}
+              </div>
+            )}
+
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  placeholder="Enter email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Button
+                variant="success"
+                className="form-control mt-3"
+                type="submit"
+                disabled={this.state.loading}
+              >
+                {this.state.loading ? 'Logging in...' : 'Login'}
+              </Button>
+            </Form>
+
+          </div>
+        </div>
+      </div>
+    )
+  }
+}

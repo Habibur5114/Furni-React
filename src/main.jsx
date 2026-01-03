@@ -13,6 +13,7 @@ import ServicesMenu from "./Component/Services/ServicesMenu";
 import BlogMenu from "./Component/Blog/BlogMenu";
 import ContactMenu from "./Component/Contact/ContactMenu";
 import Master from "./Backend/Master.jsx";
+import AdminLogin from "./Backend/AdminLogin.jsx";
 import Main from "./Backend/Page/Main.jsx";
 import CategoryList from "./Backend/Category/CategoryList.jsx";
 import Create from "./Backend/Category/Create.jsx";
@@ -26,6 +27,7 @@ createRoot(document.getElementById("root")).render(
       <Route path="/about" element={<AboutMenu />} />
       <Route path="/services" element={<ServicesMenu />} />
       <Route path="/blog" element={<BlogMenu />} />
+      <Route path="/admin/login" element={<AdminLogin/>} />
       <Route path="/contact" element={<ContactMenu />} />
       <Route path="/admin" element={<Master />}>
         <Route path="dashboard" element={<Main />} />

@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 export default class SidebarMenu extends Component {
   render() {
     return (
       <div>
         <div className="sidebar-brand">
-          <button
-            className="brand-link btn btn-link p-0"
-            onClick={this.handleClick}
-          >
-            <img
-              src="/img/AdminLTELogo.png"
-              alt="AdminLTE Logo"
-              className="brand-image opacity-75 shadow"
-            />
-            <span className="brand-text fw-light">AdminLTE 4</span>
-          </button>
+          <h1 className="text-white">Furni</h1>
         </div>
-
         <div className="sidebar-wrapper">
           <nav className="mt-2">
             <ul
@@ -25,18 +14,29 @@ export default class SidebarMenu extends Component {
               data-lte-toggle="treeview"
               role="navigation"
               aria-label="Main navigation"
-              data-accordion="false"
-              id="navigation"
-            >
-              <li className="nav-item menu-open">
-                <Link to="/admin/dashboard" className="nav-link btn btn-link">
-                  <p>Dashboard</p>
-                </Link>
+              id="navigation">
+
+              <li className="nav-item">
+                <NavLink
+                  to="/admin/dashboard"
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "active bg-success text-white" : "text-white"}`
+                  }>
+                  <i className="bi bi-speedometer2 me-2"></i>
+                  <span>Dashboard</span>
+                </NavLink>
               </li>
-              <li className="nav-item ">
-                <Link to="/admin/category/list" className="nav-link btn btn-link">
-                  <p>Category</p>
-                </Link>
+              <li className="nav-item">
+                <NavLink
+                  to="/admin/category/list"
+                  className={() => {
+                    const isCategoryActive = window.location.pathname.startsWith("/admin/category");
+                    return `nav-link ${isCategoryActive ? "active bg-success text-white" : "text-white"}`;
+                  }}
+                >
+                  <i className="bi bi-grid me-2"></i>
+                  <span>Category</span>
+                </NavLink>
               </li>
             </ul>
           </nav>

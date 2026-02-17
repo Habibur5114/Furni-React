@@ -1,42 +1,4 @@
-// import React, { Component } from 'react'
-// import Button from 'react-bootstrap/Button';
-// import Form from 'react-bootstrap/Form';
 
-// export default class AdminLogin extends Component {
-//   render() {
-//     return (
-
-//       <div className='container d-flex align-items-center justify-content-center' style={{ minHeight: '100vh' }}>
-
-//         <div className="row justify-content-center w-100">
-
-//           <div className="col-lg-4 col-md-6 shadow p-4 bg-white rounded">
-//             <div className='text-center py-4'>
-//               <h5>Softvence Delta</h5>
-//             </div>
-
-//             <Form>
-//               <Form.Group className="mb-3" controlId="formBasicEmail">
-//                 <Form.Label>Email</Form.Label>
-//                 <Form.Control type="email" name="email" placeholder="Enter email" />
-//               </Form.Group>
-
-//               <Form.Group className="mb-3" controlId="formBasicPassword">
-//                 <Form.Label>Password</Form.Label>
-//                 <Form.Control type="password" name="password" placeholder="Password" />
-//               </Form.Group>
-
-//               <Button variant="success mb-4 mt-3" className='form-control' type="submit">
-//                 Login
-//               </Button>
-//             </Form>
-//           </div>
-
-//         </div>
-//       </div>
-//     )
-//   }
-// }
 
 import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
@@ -55,7 +17,6 @@ export default class AdminLogin extends Component {
       error: ''
     }
   }
-
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value

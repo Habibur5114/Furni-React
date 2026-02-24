@@ -30,19 +30,17 @@ export default class AdminLogin extends Component {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/admin/login',
+        'https://bader022.apphero.agency/api/login',
         {
           email: this.state.email,
           password: this.state.password,
         }
       )
 
-      // Save token
       localStorage.setItem('admin_token', response.data.token)
 
       alert('Login Successful')
 
-      // redirect
       window.location.href = '/admin/dashboard'
 
     } catch (error) {

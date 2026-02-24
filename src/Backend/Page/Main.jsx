@@ -35,7 +35,7 @@ export default class Main extends Component {
                 <div className="row">
                   {/* Small Boxes */}
                   <div className="col-lg-3 col-6">
-                    <div className="small-box text-bg-primary">
+                    <div className="small-box text-bg-light">
                       <div className="inner">
                         <h3>150</h3>
                         <p>New Orders</p>
@@ -59,7 +59,7 @@ export default class Main extends Component {
                   </div>
 
                   <div className="col-lg-3 col-6">
-                    <div className="small-box text-bg-success">
+                    <div className="small-box text-bg-light">
                       <div className="inner">
                         <h3>
                           53<sup className="fs-5">%</sup>
@@ -85,7 +85,7 @@ export default class Main extends Component {
                   </div>
 
                   <div className="col-lg-3 col-6">
-                    <div className="small-box text-bg-warning">
+                    <div className="small-box text-bg-light">
                       <div className="inner">
                         <h3>44</h3>
                         <p>User Registrations</p>
@@ -109,7 +109,7 @@ export default class Main extends Component {
                   </div>
 
                   <div className="col-lg-3 col-6">
-                    <div className="small-box text-bg-danger">
+                    <div className="small-box text-bg-light">
                       <div className="inner">
                         <h3>65</h3>
                         <p>Unique Visitors</p>

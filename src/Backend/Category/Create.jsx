@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 export default class Create extends Component {
   render() {
-  
 
     return (
       <div className="container-fluid py-5 bg-light min-vh-100">

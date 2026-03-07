@@ -1,55 +1,55 @@
-
-
-import React, { Component } from 'react'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import axios from 'axios'
+import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 export default class AdminLogin extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       email: '',
       password: '',
       loading: false,
-      error: ''
-    }
+      error: '',
+    };
   }
+
   handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    this.setState({ loading: true, error: '' })
+    this.setState({ loading: true, error: '' });
 
     try {
-      const response = await axios.post(
-        'https://bader022.apphero.agency/api/login',
-        {
-          email: this.state.email,
-          password: this.state.password,
-        }
-      )
 
-      localStorage.setItem('admin_token', response.data.token)
+      const API_URL = import.meta.env.VITE_API_URL;
 
-      alert('Login Successful')
 
-      window.location.href = '/admin/dashboard'
+      const response = await axios.post(`${API_URL}/login`, {
+        email: this.state.email,
+        password: this.state.password,
+      });
 
+
+      localStorage.setItem('admin_token', response.data.token);
+
+      alert('Login Successful');
+
+      window.location.href = '/admin/dashboard';
     } catch (error) {
+
       this.setState({
         error: error.response?.data?.message || 'Login failed',
-        loading: false
-      })
+        loading: false,
+      });
     }
-  }
+  };
 
   render() {
     return (
@@ -59,15 +59,12 @@ export default class AdminLogin extends Component {
       >
         <div className="row justify-content-center w-100">
           <div className="col-lg-4 col-md-6 shadow p-4 bg-white rounded">
-
             <div className="text-center py-4">
               <h5>Softvence Delta</h5>
             </div>
 
             {this.state.error && (
-              <div className="alert alert-danger">
-                {this.state.error}
-              </div>
+              <div className="alert alert-danger">{this.state.error}</div>
             )}
 
             <Form onSubmit={this.handleSubmit}>
@@ -104,10 +101,9 @@ export default class AdminLogin extends Component {
                 {this.state.loading ? 'Logging in...' : 'Login'}
               </Button>
             </Form>
-
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

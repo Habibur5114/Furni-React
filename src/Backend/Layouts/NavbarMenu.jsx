@@ -235,46 +235,18 @@ export default class NavbarMenu extends Component {
                   </button>
                   <ul className="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <li className="user-header text-bg-primary">
-                      <img
+                      {/* <img
                         src="./assets/img/user2-160x160.jpg"
                         className="rounded-circle shadow"
                         alt="User"
-                      />
+                      /> */}
                       <p>
                         Alexander Pierce - Web Developer
                         <small>Member since Nov. 2023</small>
                       </p>
                     </li>
 
-                    <li className="user-body">
-                      <div className="row">
-                        <div className="col-4 text-center">
-                          <button
-                            className="btn btn-link"
-                            onClick={this.handleClick}
-                          >
-                            Followers
-                          </button>
-                        </div>
-                        <div className="col-4 text-center">
-                          <button
-                            className="btn btn-link"
-                            onClick={this.handleClick}
-                          >
-                            Sales
-                          </button>
-                        </div>
-                        <div className="col-4 text-center">
-                          <button
-                            className="btn btn-link"
-                            onClick={this.handleClick}
-                          >
-                            Friends
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-
+                    
                     <li className="user-footer">
                       <button
                         className="btn btn-outline-secondary"

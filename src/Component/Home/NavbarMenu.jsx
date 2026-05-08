@@ -14,7 +14,7 @@ class NavbarMenu extends Component {
         <Navbar collapseOnSelect expand='lg' className='navbar-here'>
           <Container>
             <Navbar.Brand href='#home'>
-              <h2 style={{ color: 'white' }}>Furni.</h2>
+              <h2 style={{ color: 'white' }}>Ht Shop.</h2>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls='responsive-navbar-nav' />
             <Navbar.Collapse id='responsive-navbar-nav'>

@@ -13,7 +13,7 @@ class Footer extends Component {
           <Row>
             <Col lg={4}>
               <div className='fotter-logo mb-5'>
-                <h2>Furni.</h2>
+                <h2>Ht Shop</h2>
                 <p>
                   Donec facilisis quam ut purus rutrum lobortis. Donec vitae
                   odio quis nisl dapibus malesuada. Nullam ac aliquet velit.
